@@ -30,7 +30,10 @@ print("pandas version:\t", pd.__version__)
 
 # Save image file in Untreated directory.
 # Specify extension for image file you want to analyze.
+# Specify min and max of area of filter.
 extension = 'tif'
+minarea = 200000
+maxarea = 300000
 len_extension = len(extension) + 1 # increase 1 as priod.
 list_file_name = glob.glob(r'Untreated/*.{}'.format(extension))
 # Set DataFrame for exporting csv file.
@@ -51,8 +54,8 @@ for file_name in list_file_name: # file_name => Untreated\~.tif
         contours, hierarchy = cv2.findContours(img_median, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
         cnts=[]
         for cnt in contours:
-            if cv2.contourArea(cnt) >200000: # extract the contour for filter by size of it.
-                if cv2.contourArea(cnt) < 300000: # adjust size of contour according to image.
+            if cv2.contourArea(cnt) >minarea: # extract the contour for filter by size of it.
+                if cv2.contourArea(cnt) < maxarea: # adjust size of contour according to image.
                     cnts.append(cnt)
         cnt_num = len(cnts)
         cnt_area = cv2.contourArea(cnts[0]) # calculate area of filter.
@@ -80,8 +83,8 @@ for file_name in list_file_name: # file_name => Untreated\~.tif
         contours, hierarchy = cv2.findContours(img_thresh, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
         cnts=[]
         for cnt in contours:
-            if cv2.contourArea(cnt) >200000:
-                if cv2.contourArea(cnt) < 300000:
+            if cv2.contourArea(cnt) >minarea:
+                if cv2.contourArea(cnt) < maxarea:
                     cnts.append(cnt)
         cnt_num = len(cnts)
         cnt_area = cv2.contourArea(cnts[0])
